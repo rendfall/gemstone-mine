@@ -17,8 +17,8 @@ export default class BootstrapState extends Phaser.State {
         this.scale.pageAlignVertically = true;
 
         this.load.tilemap('level1', 'assets/levels/level1.json', null, Phaser.Tilemap.TILED_JSON);
-        this.load.image('tiles', 'assets/tiles-sprite.png');
-        this.load.image('player', 'assets/player.png');
+        this.load.image('tiles', 'assets/images/tilesets/tiles-sprite.png');
+        this.load.image('player', 'assets/images/sprites/player.png');
 
         WebFont.load({
             google: {

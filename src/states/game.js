@@ -1,5 +1,7 @@
 import Phaser from 'phaser'
 
+import Player from '../sprites/player';
+
 export default class GameState extends Phaser.State {
     constructor () {
         super({ key: 'GameState' });
@@ -27,14 +29,7 @@ export default class GameState extends Phaser.State {
         map.setCollisionBetween(1, 2000, true, 'obstacles');
 
         // Player
-        let result = this.findObjectsByType('player', map, 'game-objects');
-        let startingTile = map.getTile(2, 3, 'terrain');
-
-        this.game.add.sprite(
-            startingTile.x * startingTile.width,
-            startingTile.y * startingTile.height,
-            'player'
-        );
+        let player = new Player(this.game, map);
     }
 
     findObjectsByType(type, map, layer) {

@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 
+import Tilemap from '../engine/tilemap';
 import Player from '../sprites/player';
 
 export default class GameState extends Phaser.State {
@@ -7,9 +8,16 @@ export default class GameState extends Phaser.State {
         super({ key: 'GameState' });
     }
 
-    init() {}
+    init() {
+        this.tilemap = new Tilemap(this.game, 1);
+        this.player = new Player(this.game, this.tilemap);
+    }
 
-    preload() {}
+    preload() {
+        // TODO(rendfall): How bind custom class to these hooks?
+        this.tilemap.preload();
+        this.player.preload();
+    }
 
     update() {}
 
@@ -17,30 +25,7 @@ export default class GameState extends Phaser.State {
         this.physics.startSystem(Phaser.Physics.ARCADE);
         this.stage.backgroundColor = "#333";
 
-        let map = this.map = this.game.add.tilemap('level1');
-        map.addTilesetImage('tiles-sprite', 'tiles');
-
-        let terrainLayer = map.createLayer('terrain');
-        let obstaclesLayer = map.createLayer('obstacles');
-        // terrainLayer.resizeWorld();
-        // obstaclesLayer.resizeWorld();
-
-        // Collision on blockers
-        map.setCollisionBetween(1, 2000, true, 'obstacles');
-
-        // Player
-        let player = new Player(this.game, map);
-    }
-
-    findObjectsByType(type, map, layer) {
-        let result = [];
-
-        map.objects[layer].forEach((element) => {
-            if(element.type === type) {
-                element.y -= map.tileHeight;
-                result.push(element);
-            }
-        });
-        return result;
+        this.tilemap.setup();
+        this.player.setup({ x: 2, y: 3 });
     }
 }

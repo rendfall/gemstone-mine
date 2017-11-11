@@ -39,3 +39,23 @@ export const SPRITES_CONFIG = {
         SLOWEST: 0.25
     }
 };
+
+export const MAP_CONFIG = {
+    levels: [
+        {
+            TILEMAP: {
+                name: 'level-1',
+                src: 'assets/levels/1/level-1.json'
+            },
+            TILESETS: [
+                { name: 'level-1', src: 'assets/levels/1/level-1.png' },
+                { name: 'collisions', src: 'assets/images/sprites/collisions.png' }
+            ],
+            LAYERS: [
+                'collisions',
+                'terrains',
+                'background'
+            ]
+        }
+    ]
+};

@@ -4,9 +4,8 @@ import { SPRITES_CONFIG } from '../config';
 export default class Player extends AbstractSprite {
     constructor(game, map) {
         let spriteName = 'player';
-        super(game, 0, 0, spriteName);
+        super(game, map, spriteName);
 
-        this.map = map;
         this.spriteName = spriteName;
         this.spritesheetPath = 'assets/images/sprites/player.png';
     }
@@ -24,7 +23,7 @@ export default class Player extends AbstractSprite {
     update(keyPressedState) {
         this.keyPressedState = keyPressedState;
 
-        if(this.isOnTile()) {
+        if(this.tilemap.isOnTile()) {
             this.updateWhenOnTile();
         } else {
             this.updateWhenNextTile();
@@ -36,55 +35,63 @@ export default class Player extends AbstractSprite {
 
     updateWhenNextTile() {
         this.updateNextTile();
-        this.isCollision = false;
+        this.tilemap.setCollisionAt(this.nextTile, true);
+        this.collisions = this.tilemap.getSurroundingCollisionsAt(this.nextTile, true);
     }
 
     updateWhenOnTile() {
         let { UP, RIGHT, DOWN, LEFT } = SPRITES_CONFIG.directions;
         let keyPressedState = this.keyPressedState;
 
+        // Clear previous position's collision
+        if (this.currentTile) {
+            this.tilemap.setCollisionAt(this.currentTile, false);
+        }
+
         this.currentTile = this.getCurrentTile();
+        this.tilemap.setCollisionAt(this.currentTile, true);
+        this.surroundingCollisions = this.tilemap.getSurroundingCollisionsAt(this.currentTile, true);
 
         if (keyPressState.up) {
             this.walkingDirection = UP;
-            if (!this.isCollision) {
+
+            if (!this.surroundingCollisions.up) {
                 this.isWalkingAnimation = true;
                 this.isMoving = true;
             } else {
                 this.isWalkingAnimation = false;
                 this.isMoving = false;
             }
-
         } else if (keyPressState.right) {
             this.walkingDirection = RIGHT;
-            if (!this.isCollision) {
+
+            if (!this.surroundingCollisions.right) {
                 this.isWalkingAnimation = true;
                 this.isMoving = true;
             } else {
                 this.isWalkingAnimation = false;
                 this.isMoving = false;
             }
-
         } else if (keyPressedState.down) {
             this.walkingDirection = DOWN;
-            if (!this.isCollision) {
+
+            if (!this.surroundingCollisions.down) {
                 this.isWalkingAnimation = true;
                 this.isMoving = true;
             } else {
                 this.isWalkingAnimation = false;
                 this.isMoving = false;
             }
-
         } else if (keyPressedState.left) {
             this.walkingDirection = LEFT;
-            if (!this.isCollision) {
+
+            if (!this.surroundingCollisions.left) {
                 this.isWalkingAnimation = true;
                 this.isMoving = true;
             } else {
                 this.isWalkingAnimation = false;
                 this.isMoving = false;
             }
-
         } else {
             this.isWalkingAnimation = false;
             this.isMoving = false;
@@ -116,7 +123,7 @@ export default class Player extends AbstractSprite {
 
     setupMovement() {
         this.walkingSpeed = SPRITES_CONFIG.walkingSpeed.NORMAL;
-        this.walkingDirection = SPRITES_CONFIG.direction.DOWN;
+        this.walkingDirection = SPRITES_CONFIG.directions.DOWN;
     }
 
     setupAnimation() {

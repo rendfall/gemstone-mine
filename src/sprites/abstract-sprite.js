@@ -14,7 +14,7 @@ export default class AbstractSprite extends Phaser.Sprite {
     walkingDirection = null;
     walkingSpeed = 0;
     isMoving = false;
-    map = false;
+    tilemap = null;
     keyPressState = {
         up: false,
         right: false,
@@ -22,8 +22,9 @@ export default class AbstractSprite extends Phaser.Sprite {
         left: false
     };
 
-    constructor(game, x, y, spriteName) {
-        super(game, x, y, spriteName);
+    constructor(game, tilemap, spriteName) {
+        super(game, 0, 0, spriteName);
+        this.tilemap = tilemap;
         this.spriteName = spriteName;
     }
 
@@ -91,7 +92,7 @@ export default class AbstractSprite extends Phaser.Sprite {
     }
 
     setupAnimation() {
-        if (this.isWalkingAnim) {
+        if (this.isWalkingAnimation) {
             this.setupWalkingAnimation();
         } else {
             this.setupIdleAnimation();
@@ -128,7 +129,7 @@ export default class AbstractSprite extends Phaser.Sprite {
         return {
             x: spriteX / SPRITES_CONFIG.spriteSize,
             y: spriteY / SPRITES_CONFIG.spriteSize
-    };
+        };
     }
 
     updateNextTile() {

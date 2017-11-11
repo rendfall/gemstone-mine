@@ -59,3 +59,19 @@
 
 * Every 10s replicates itself
 * Doesn't kill immediately, but can devour player (instant death)
+
+## Roadmap (TODO list)
+
+* [x] Create TileMap (level1)
+* [ ] Create base states: Menu, Game, EndGame
+* [x] Create Player Sprite object
+* [ ] Handle inputs (keyboard)
+* [ ] Implement tile-based movement
+* [ ] Add colliders to layers (terrain, obstacles, game-objects)
+* [ ] Create pickups and add colliders
+* [ ] Implement logic related to completing level
+* [ ] Create Enemies Sprite objects and add colliders
+* [ ] Implement AI based on individual features
+* [ ] Create rest of levels based on existing one
+* [ ] Add some animations
+

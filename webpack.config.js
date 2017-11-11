@@ -44,7 +44,8 @@ module.exports = {
                 use: [{
                     loader: 'babel-loader',
                     options: {
-                        presets: ['env']
+                        presets: ['env'],
+                        plugins: ['transform-class-properties']
                     }
                 }],
                 include: path.join(__dirname, 'src')

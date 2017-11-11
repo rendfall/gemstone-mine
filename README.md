@@ -48,7 +48,7 @@
 #### Righteous Skull 💀
 
 * Always turns right
-* Have 0.1% chance to turns back
+* Have 0.1% chance to turns back spontaneously
 
 #### Scavenger 🐀
 

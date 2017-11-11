@@ -77,4 +77,4 @@
 * [ ] Implement AI based on individual features
 * [ ] Create rest of levels based on existing one
 * [ ] Add some animations
-
+* [ ] Add some sounds and music

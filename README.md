@@ -4,6 +4,10 @@
 
 ## Tools of choice 🔧
 
+* Phaser CE 2.9.1
+* Webpack
+* Nodemon
+
 ## Game rules 🎲
 
 * Collect 80% gemstones on the level to open stairs to next level

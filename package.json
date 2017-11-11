@@ -4,8 +4,8 @@
     "description": "Tile-based game with gems and stuffs...",
     "main": "index.js",
     "scripts": {
-        "start": "nodemon ./server.js && webpack",
-        "dev": "nodemon ./server.js && webpack --watch"
+        "start": "nodemon ./server.js",
+        "dev": "webpack --watch"
     },
     "repository": {
         "type": "git",

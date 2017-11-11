@@ -9,7 +9,7 @@ export const PHASER_CONFIG = {
 };
 
 export const SPRITES_CONFIG = {
-    spriteSize: 16,
+    spriteSize: 32,
     animations: {
         STILL_UP: 'still-up',
         STILL_DOWN: 'still-down',

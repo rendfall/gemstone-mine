@@ -6,11 +6,15 @@
 
 * Phaser CE 2.9.1
 * Webpack
+* Express
 * Nodemon
+* [Tiled](http://www.mapeditor.org)
+* [Piskel](https://github.com/piskelapp/piskel)
+* [sfxr](http://www.drpetter.se/project_sfxr.html)
 
 ## Game rules 🎲
 
-* Collect 80% gemstones on the level to open stairs to next level
+* Collect at least 80% gemstones to open the descent to next level
 * Avoid almost everything what moves - it can kill you!
 * You have only 3 lifes so don't play hero
 
@@ -22,7 +26,6 @@
 
 * You must collect them to go deeper
 * They are so precious on the surface that it is worth risking for them life!
-* Just collect 80% of gemstones to open the descent to the next level
 
 #### Potion of protection 🛡
 

@@ -33,6 +33,8 @@ export default class Tilemap {
         this.setupTilesets();
         this.setupLayers();
         this.setupCollisions();
+
+        this.mapObjects.setupScoreBoard();
     }
 
     setupTilemap() {

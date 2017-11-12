@@ -2,10 +2,36 @@ export default class MapObjects {
     totalGems = 0;
     gemCollected = 0;
     exitTile = null;
+    scoreBoard = null;
 
     constructor(game, map) {
         this.game = game;
         this.map = map;
+    }
+
+    setupScoreBoard() {
+        this.scoreBoard = this.game.add.text(5, 0, '', {
+            fontSize: '24px',
+            fill: '#fff'
+        });
+
+        this.updateScoreBoard();
+    }
+
+    updateScoreBoard() {
+        let staticText = 'Gem collected: ';
+        let gemCollected = String(this.gemCollected);
+        let totalGems = String(this.totalGems);
+        let doorText = '';
+
+        this.scoreBoard.addColor('#34c624', 16);
+        this.scoreBoard.addColor('#fff', 22);
+
+        if (this.isEnoughGemsCollected()) {
+            doorText = '| Go to exit !!';
+        }
+
+        this.scoreBoard.text = `${staticText} ${gemCollected} / ${totalGems} ${doorText}`;
     }
 
     reset() {
@@ -28,6 +54,8 @@ export default class MapObjects {
         if (this.isEnoughGemsCollected()) {
             this.openExit();
         }
+
+        this.updateScoreBoard();
     }
 
     isEnoughGemsCollected() {

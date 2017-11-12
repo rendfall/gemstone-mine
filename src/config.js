@@ -34,7 +34,8 @@ export const SPRITES_CONFIG = {
         Y: 1
     },
     walkingSpeed: {
-        NORMAL: 1,
+        // TODO(rendfall): Must be even number larger then 1. Why?
+        NORMAL: 2,
         SLOW: 0.5,
         SLOWEST: 0.25
     }

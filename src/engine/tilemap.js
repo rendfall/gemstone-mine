@@ -143,7 +143,7 @@ export default class Tilemap {
         tile.properties.type = type;
     }
 
-    getSurroundingCollisionsAt(tile) {
+    getSurroundingCollisionsAt(tile, isEnemy = false) {
         let surroundings = {
             up: false,
             right: false,
@@ -156,35 +156,40 @@ export default class Tilemap {
             y: tile.y - 1
         };
 
-        surroundings.up = (tileUp.y < 0) || this.getCollisionAt(tileUp);
+        surroundings.up = (tileUp.y < 0) || this.getCollisionAt(tileUp, isEnemy);
 
         let tileRight = {
             x: tile.x + 1,
             y: tile.y
         };
 
-        surroundings.right = (tileRight.x >= this.map.width) || this.getCollisionAt(tileRight);
+        surroundings.right = (tileRight.x >= this.map.width) || this.getCollisionAt(tileRight, isEnemy);
 
         let tileDown = {
             x: tile.x,
             y: tile.y + 1
         };
 
-        surroundings.down = (tileDown.y >= this.map.height) || this.getCollisionAt(tileDown);
+        surroundings.down = (tileDown.y >= this.map.height) || this.getCollisionAt(tileDown, isEnemy);
 
         let tileLeft = {
             x: tile.x - 1,
             y: tile.y
         };
 
-        surroundings.left = (tileLeft.x < 0) || this.getCollisionAt(tileLeft);
+        surroundings.left = (tileLeft.x < 0) || this.getCollisionAt(tileLeft, isEnemy);
 
         return surroundings;
     }
 
-    getCollisionAt(tile) {
+    getCollisionAt(tile, isEnemy) {
         let terrainsLayer = this.layers.get('terrains');
         let tileData = terrainsLayer.layer.data[tile.y][tile.x];
+
+        if (isEnemy && tileData.index === 4) {
+            return true;
+        }
+
         return tileData.collideUp
             && tileData.collideRight
             && tileData.collideDown

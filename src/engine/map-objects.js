@@ -24,11 +24,10 @@ export default class MapObjects {
         let totalGems = String(this.totalGems);
         let doorText = '';
 
-        this.scoreBoard.addColor('#34c624', 16);
-        this.scoreBoard.addColor('#fff', 22);
-
         if (this.isEnoughGemsCollected()) {
             doorText = '| Go to exit !!';
+            this.scoreBoard.addColor('#34c624', 16);
+            this.scoreBoard.addColor('#fff', 22);
         }
 
         this.scoreBoard.text = `${staticText} ${gemCollected} / ${totalGems} ${doorText}`;

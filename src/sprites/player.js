@@ -37,7 +37,7 @@ export default class Player extends AbstractSprite {
             this.updateWhenNextTile();
         }
 
-        this.setupAnimation();
+        this.updateAnimation();
         this.move();
     }
 

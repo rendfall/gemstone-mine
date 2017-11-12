@@ -33,7 +33,7 @@ export default class AbstractSprite {
         this.sprite.animations.add(WALKING_SIDE, [4, 5], this.animationSpeed, true);
     }
 
-    setupIdleAnimation() {
+    updateIdleAnimation() {
         let { UP, RIGHT, DOWN, LEFT } = SPRITES_CONFIG.directions;
         let { STILL_DOWN, STILL_UP, STILL_SIDE } = SPRITES_CONFIG.animations;
 
@@ -59,7 +59,7 @@ export default class AbstractSprite {
         this.sprite.animations.stop();
     }
 
-    setupWalkingAnimation() {
+    updateWalkingAnimation() {
         let { UP, RIGHT, DOWN, LEFT } = SPRITES_CONFIG.directions;
         let { WALKING_DOWN, WALKING_UP, WALKING_SIDE } = SPRITES_CONFIG.animations;
 
@@ -84,11 +84,11 @@ export default class AbstractSprite {
         }
     }
 
-    setupAnimation() {
+    updateAnimation() {
         if (this.isWalkingAnimation) {
-            this.setupWalkingAnimation();
+            this.updateWalkingAnimation();
         } else {
-            this.setupIdleAnimation();
+            this.updateIdleAnimation();
         }
     }
 

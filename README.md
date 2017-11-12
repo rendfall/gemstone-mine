@@ -11,6 +11,11 @@
 * [Tiled](http://www.mapeditor.org)
 * [Piskel](https://github.com/piskelapp/piskel)
 * [sfxr](http://www.drpetter.se/project_sfxr.html)
+* [photopea](https://www.photopea.com)
+
+## Graphics 🎖
+
+All credit for graphical content goes to [Anna Bilińska](https://www.linkedin.com/in/annabilinskaanna/).
 
 ## Game rules 🎲
 

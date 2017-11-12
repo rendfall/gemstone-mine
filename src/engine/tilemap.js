@@ -63,6 +63,16 @@ export default class Tilemap {
         this.layers.set('collisions', collisionsLayer);
     }
 
+    putTile(index, tile) {
+        let level1Layer = this.layers.get('level-1');
+        this.map.putTile(index, tile.x, tile.y, level1Layer);
+    }
+
+    removeTile(tile) {
+        let level1Layer = this.layers.get('level-1');
+        this.map.removeTile(tile.x, tile.y, level1Layer);
+    }
+
     setupCollisions() {
         let collisionsLayer = this.layers.get('collisions');
         let level1Layer = this.layers.get('level-1');

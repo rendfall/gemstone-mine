@@ -43,6 +43,7 @@ export default class Player extends AbstractSprite {
 
     updateWhenNextTile() {
         this.updateNextTile();
+        this.tilemap.removeTile(this.nextTile);
         this.tilemap.setCollisionAt(this.nextTile, true);
         this.collisions = this.tilemap.getSurroundingCollisionsAt(this.nextTile);
     }

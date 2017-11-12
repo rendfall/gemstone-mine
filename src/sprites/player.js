@@ -120,6 +120,8 @@ export default class Player extends AbstractSprite {
             this.getTileY(this.initialTile.y),
             this.spriteName
         );
+
+        this.game.camera.follow(this.sprite);
     }
 
     setupAnchor() {

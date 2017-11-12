@@ -50,32 +50,32 @@ export default class Tilemap {
     setupLayers() {
         // TODO(rendfall): Use one loop to create and set to map.
         let backgroundsLayer = this.map.createLayer('backgrounds');
-        let level1Layer = this.map.createLayer('terrains');
+        let terrainsLayer = this.map.createLayer('terrains');
         let collisionsLayer = this.map.createLayer('collisions');
 
         backgroundsLayer.resizeWorld();
-        level1Layer.resizeWorld();
+        terrainsLayer.resizeWorld();
         collisionsLayer.alpha = 0;
         collisionsLayer.resizeWorld();
 
         this.layers.set('backgrounds', backgroundsLayer);
-        this.layers.set('level-1', level1Layer);
+        this.layers.set('terrains', terrainsLayer);
         this.layers.set('collisions', collisionsLayer);
     }
 
     putTile(index, tile) {
-        let level1Layer = this.layers.get('level-1');
-        this.map.putTile(index, tile.x, tile.y, level1Layer);
+        let terrainsLayer = this.layers.get('terrains');
+        this.map.putTile(index, tile.x, tile.y, terrainsLayer);
     }
 
     removeTile(tile) {
-        let level1Layer = this.layers.get('level-1');
-        this.map.removeTile(tile.x, tile.y, level1Layer);
+        let terrainsLayer = this.layers.get('terrains');
+        this.map.removeTile(tile.x, tile.y, terrainsLayer);
     }
 
     setupCollisions() {
         let collisionsLayer = this.layers.get('collisions');
-        let level1Layer = this.layers.get('level-1');
+        let terrainsLayer = this.layers.get('terrains');
         let collisionTile;
         let targetTile;
         let hasCollision;
@@ -83,15 +83,20 @@ export default class Tilemap {
         for (let i = 0; i < this.map.height; i++) {
             for (let j = 0; j < this.map.width ; j++) {
                 collisionTile = collisionsLayer.layer.data[i][j];
-                // TODO(rendfall) How to avoid this nasty magic number?
-                hasCollision = (collisionTile.index > 4);
-                targetTile = level1Layer.layer.data[i][j];
-                targetTile.collideDown = hasCollision;
-                targetTile.collideLeft = hasCollision;
-                targetTile.collideRight = hasCollision;
-                targetTile.collideUp = hasCollision;
+                targetTile = terrainsLayer.layer.data[i][j];
+
+                if (collisionTile.properties.collision) {
+                    this.setTileAsCollider(targetTile);
+                }
             }
         }
+    }
+
+    setTileAsCollider(tile) {
+        tile.collideDown = true;
+        tile.collideLeft = true;
+        tile.collideRight = true;
+        tile.collideUp = true;
     }
 
     getSurroundingCollisionsAt(tile) {
@@ -134,8 +139,8 @@ export default class Tilemap {
     }
 
     getCollisionAt(tile) {
-        let tilesLayer = this.layers.get('level-1');
-        let tileData = tilesLayer.layer.data[tile.y][tile.x];
+        let terrainsLayer = this.layers.get('terrains');
+        let tileData = terrainsLayer.layer.data[tile.y][tile.x];
         return tileData.collideUp
             && tileData.collideRight
             && tileData.collideDown
@@ -143,8 +148,8 @@ export default class Tilemap {
     }
 
     setCollisionAt(tile, hasCollision) {
-        let tilesLayer = this.layers.get('level-1');
-        let tileData = tilesLayer.layer.data[tile.y][tile.x];
+        let terrainsLayer = this.layers.get('terrains');
+        let tileData = terrainsLayer.layer.data[tile.y][tile.x];
         tileData.collideUp = hasCollision;
         tileData.collideRight = hasCollision;
         tileData.collideDown = hasCollision;

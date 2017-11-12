@@ -68,9 +68,9 @@
 * [x] Create TileMap (level1)
 * [ ] Create base states: Menu, Game, EndGame
 * [x] Create Player Sprite object
-* [ ] Handle inputs (keyboard)
-* [ ] Implement tile-based movement
-* [ ] Add colliders to layers (terrain, obstacles, game-objects)
+* [x] Handle inputs (keyboard)
+* [x] Implement tile-based movement
+* [x] Add colliders to layers (terrain, obstacles, game-objects)
 * [ ] Create pickups and add colliders
 * [ ] Implement logic related to completing level
 * [ ] Create Enemies Sprite objects and add colliders
@@ -78,3 +78,4 @@
 * [ ] Create rest of levels based on existing one
 * [ ] Add some animations
 * [ ] Add some sounds and music
+* [ ] Create randomized levels

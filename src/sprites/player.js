@@ -28,7 +28,6 @@ export default class Player extends AbstractSprite {
         );
     }
 
-    // update(isUpPressed, isRightPressed, isDownPressed, isLeftPressed) {
     update(keyPressedState) {
         this.keyPressedState = keyPressedState;
 
@@ -45,61 +44,60 @@ export default class Player extends AbstractSprite {
     updateWhenNextTile() {
         this.updateNextTile();
         this.tilemap.setCollisionAt(this.nextTile, true);
-        this.collisions = this.tilemap.getSurroundingCollisionsAt(this.nextTile, true);
+        this.collisions = this.tilemap.getSurroundingCollisionsAt(this.nextTile);
     }
 
     updateWhenOnTile() {
         let { UP, RIGHT, DOWN, LEFT } = SPRITES_CONFIG.directions;
         let keyPressedState = this.keyPressedState;
 
-        // Clear previous position's collision
         if (this.currentTile) {
             this.tilemap.setCollisionAt(this.currentTile, false);
         }
 
         this.currentTile = this.getCurrentTile();
         this.tilemap.setCollisionAt(this.currentTile, true);
-        this.surroundingCollisions = this.tilemap.getSurroundingCollisionsAt(this.currentTile, true);
+        this.surroundingCollisions = this.tilemap.getSurroundingCollisionsAt(this.currentTile);
 
         if (keyPressedState.up) {
             this.walkingDirection = UP;
 
-            if (!this.surroundingCollisions.up) {
-                this.isWalkingAnimation = true;
-                this.isMoving = true;
-            } else {
+            if (this.surroundingCollisions.up) {
                 this.isWalkingAnimation = false;
                 this.isMoving = false;
+            } else {
+                this.isWalkingAnimation = true;
+                this.isMoving = true;
             }
         } else if (keyPressedState.right) {
             this.walkingDirection = RIGHT;
 
-            if (!this.surroundingCollisions.right) {
-                this.isWalkingAnimation = true;
-                this.isMoving = true;
-            } else {
+            if (this.surroundingCollisions.right) {
                 this.isWalkingAnimation = false;
                 this.isMoving = false;
+            } else {
+                this.isWalkingAnimation = true;
+                this.isMoving = true;
             }
         } else if (keyPressedState.down) {
             this.walkingDirection = DOWN;
 
-            if (!this.surroundingCollisions.down) {
-                this.isWalkingAnimation = true;
-                this.isMoving = true;
-            } else {
+            if (this.surroundingCollisions.down) {
                 this.isWalkingAnimation = false;
                 this.isMoving = false;
+            } else {
+                this.isWalkingAnimation = true;
+                this.isMoving = true;
             }
         } else if (keyPressedState.left) {
             this.walkingDirection = LEFT;
 
-            if (!this.surroundingCollisions.left) {
-                this.isWalkingAnimation = true;
-                this.isMoving = true;
-            } else {
+            if (this.surroundingCollisions.left) {
                 this.isWalkingAnimation = false;
                 this.isMoving = false;
+            } else {
+                this.isWalkingAnimation = true;
+                this.isMoving = true;
             }
         } else {
             this.isWalkingAnimation = false;

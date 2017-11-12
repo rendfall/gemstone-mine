@@ -65,6 +65,7 @@ export default class Tilemap {
 
     setupCollisions() {
         let collisionsLayer = this.layers.get('collisions');
+        let level1Layer = this.layers.get('level-1');
         let collisionTile;
         let targetTile;
         let hasCollision;
@@ -74,7 +75,7 @@ export default class Tilemap {
                 collisionTile = collisionsLayer.layer.data[i][j];
                 // TODO(rendfall) How to avoid this nasty magic number?
                 hasCollision = (collisionTile.index > 4);
-                targetTile = collisionsLayer.layer.data[i][j];
+                targetTile = level1Layer.layer.data[i][j];
                 targetTile.collideDown = hasCollision;
                 targetTile.collideLeft = hasCollision;
                 targetTile.collideRight = hasCollision;

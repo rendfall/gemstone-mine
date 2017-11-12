@@ -60,7 +60,7 @@
          "imageheight":32,
          "imagewidth":96,
          "margin":0,
-         "name":"collision",
+         "name":"collisions",
          "spacing":0,
          "tilecount":3,
          "tileheight":32,

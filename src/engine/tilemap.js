@@ -5,10 +5,7 @@ import { MAP_CONFIG } from '../config';
 export default class Tilemap {
     level = null;
     tilemap = null;
-    mainTileset = null;
-    collisionsTileset = null;
     layers = new Map();
-    collisionsLayer = null;
 
     constructor(game, levelNumber) {
         this.game = game;
@@ -31,13 +28,14 @@ export default class Tilemap {
     }
 
     setup() {
-        let { TILEMAP, TILESETS } = this.level;
-        let map = this.game.add.tilemap(TILEMAP.name);
+        let tilemap = this.level.TILEMAP;
+        let tilesets = this.level.TILESETS || [];
+        let map = this.game.add.tilemap(tilemap.name);
         let collisionTile;
         let targetTile;
         let hasCollision;
 
-        TILESETS.forEach((tileset, i) => {
+        tilesets.forEach((tileset, i) => {
             map.addTilesetImage(tileset.name);
             let layer = map.createLayer(i);
             layer.resizeWorld();
@@ -48,8 +46,8 @@ export default class Tilemap {
 
         for (let i = 0; i < map.height; i++) {
             for (let j = 0; j < map.width ; j++) {
-                // get collision data from collision layer
                 collisionTile = collisionsLayer.data[i][j];
+                // TODO(rendfall) How to avoid this nasty magic number?
                 hasCollision = (collisionTile.index > 4);
 
                 targetTile = collisionsLayer.data[i][j];
@@ -71,51 +69,33 @@ export default class Tilemap {
             left: false
         };
 
-        // check tile up
         let tileUp = {
             x: tile.x,
             y: tile.y - 1
         };
 
-        if (tileUp.y < 0) {
-            surroundings.up = true;
-        } else {
-            surroundings.up = this.getCollisionAt(tileUp);
-        }
+        surroundings.up = (tileUp.y < 0) || this.getCollisionAt(tileUp);
 
-        // check tile right
         let tileRight = {
             x: tile.x + 1,
             y: tile.y
         };
 
-        if (tileRight.x >= this.tilemap.width) {
-            surroundings.right = true;
-        } else {
-            surroundings.right = this.getCollisionAt(tileRight);
-        }
+        surroundings.right = (tileRight.x >= this.tilemap.width) || this.getCollisionAt(tileRight);
 
-        // check tile down
         let tileDown = {
             x: tile.x,
             y: tile.y + 1
         };
-        if (tileDown.y >= this.tilemap.height) {
-            surroundings.down = true;
-        } else {
-            surroundings.down = this.getCollisionAt(tileDown);
-        }
 
-        // check tile left
+        surroundings.down = (tileDown.y >= this.tilemap.height) || this.getCollisionAt(tileDown);
+
         let tileLeft = {
             x: tile.x - 1,
             y: tile.y
         };
-        if(tileLeft.x < 0) {
-            surroundings.left = true;
-        } else {
-            surroundings.left = getCollisionAt(tileLeft);
-        }
+
+        surroundings.left = (tileLeft.x < 0) || this.getCollisionAt(tileLeft);
 
         return surroundings;
     }
@@ -123,8 +103,10 @@ export default class Tilemap {
     getCollisionAt(tile) {
         let tilesLayer = this.layers.get(this.level.TILEMAP.name);
         let tileData = tilesLayer.data[tile.y][tile.x];
-        let hasCollision = (tileData.collideUp && tileData.collideRight && tileData.collideDown && tileData.collideLeft);
-        return hasCollision;
+        return tileData.collideUp
+            && tileData.collideRight
+            && tileData.collideDown
+            && tileData.collideLeft;
     }
 
     setCollisionAt(tile, hasCollision) {

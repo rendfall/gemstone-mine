@@ -111,6 +111,32 @@
          "spacing":0,
          "tilecount":6,
          "tileheight":32,
+         "tileproperties":
+            {
+             "3":
+                {
+                 "open":true,
+                 "type":"exit"
+                },
+             "4":
+                {
+                 "open":false,
+                 "type":"exit"
+                }
+            },
+         "tilepropertytypes":
+            {
+             "3":
+                {
+                 "open":"bool",
+                 "type":"string"
+                },
+             "4":
+                {
+                 "open":"bool",
+                 "type":"string"
+                }
+            },
          "tilewidth":32,
          "transparentcolor":"#ffffff"
         }, 

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import { MAP_CONFIG } from '../config';
+import MapObjects from './map-objects';
 
 export default class Tilemap {
     map = null;
@@ -37,6 +38,7 @@ export default class Tilemap {
     setupTilemap() {
         let tilemap = this.level.TILEMAP;
         this.map = this.game.add.tilemap(tilemap.name);
+        this.mapObjects = new MapObjects(game, this.map);
     }
 
     setupTilesets() {
@@ -66,15 +68,17 @@ export default class Tilemap {
         this.layers.set('objects', objectsLayer);
     }
 
-    setInteraction(tile) {
+    triggerAction(tile) {
         let objectTile = this.getTileObject(tile);
 
         if (!objectTile) return;
 
         switch (objectTile.properties.type) {
             case 'gem':
-                console.log('You picked gem!');
-                break
+                return this.mapObjects.pickupGem(objectTile);
+
+            case 'exit':
+                return this.mapObjects.tryExit(objectTile);
         }
     }
 
@@ -108,6 +112,10 @@ export default class Tilemap {
                 if (collisionsTile.properties.action) {
                     this.setTileAsInteract(targetTile, objectsTile.properties.type);
                 }
+
+                if (objectsTile.properties) {
+                    this.setupTileProperties(objectsTile);
+                }
             }
         }
     }
@@ -119,8 +127,18 @@ export default class Tilemap {
         tile.collideUp = true;
     }
 
+    setupTileProperties(tile) {
+        switch (tile.properties.type) {
+            case 'gem':
+                return this.mapObjects.addGem();
+
+            case 'exit':
+                return this.mapObjects.addExit(tile);
+        }
+    }
+
     setTileAsInteract(tile, type) {
-        tile.properties.type =  type
+        tile.properties.type = type;
     }
 
     getSurroundingCollisionsAt(tile) {

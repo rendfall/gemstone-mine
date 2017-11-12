@@ -62,7 +62,7 @@ export default class Player extends AbstractSprite {
 
         if (this.isPlayerEntered) {
             this.isPlayerEntered = false;
-            this.tilemap.setInteraction(this.currentTile);
+            this.tilemap.triggerAction(this.currentTile);
         }
 
         this.tilemap.setCollisionAt(this.currentTile, true);

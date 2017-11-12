@@ -2,10 +2,19 @@ import AbstractSprite from './abstract-sprite';
 import { SPRITES_CONFIG } from '../config';
 
 export default class Player extends AbstractSprite {
+    tilemap = null;
+    keyPressedState = {
+        up: false,
+        right: false,
+        down: false,
+        left: false
+    };
+
     constructor(game, map) {
         let spriteName = 'player';
-        super(game, map, spriteName);
+        super(game, spriteName);
 
+        this.tilemap = map;
         this.spriteName = spriteName;
         this.spritesheetPath = 'assets/images/sprites/player.png';
     }
@@ -14,8 +23,8 @@ export default class Player extends AbstractSprite {
         this.game.load.spritesheet(
             this.spriteName,
             this.spritesheetPath,
-            0,
-            0
+            SPRITES_CONFIG.spriteSize,
+            SPRITES_CONFIG.spriteSize
         );
     }
 
@@ -23,13 +32,13 @@ export default class Player extends AbstractSprite {
     update(keyPressedState) {
         this.keyPressedState = keyPressedState;
 
-        if(this.tilemap.isOnTile()) {
+        if (this.isOnTile()) {
             this.updateWhenOnTile();
         } else {
             this.updateWhenNextTile();
         }
 
-        this.setAnimation();
+        this.setupAnimation();
         this.move();
     }
 
@@ -52,7 +61,7 @@ export default class Player extends AbstractSprite {
         this.tilemap.setCollisionAt(this.currentTile, true);
         this.surroundingCollisions = this.tilemap.getSurroundingCollisionsAt(this.currentTile, true);
 
-        if (keyPressState.up) {
+        if (keyPressedState.up) {
             this.walkingDirection = UP;
 
             if (!this.surroundingCollisions.up) {
@@ -62,7 +71,7 @@ export default class Player extends AbstractSprite {
                 this.isWalkingAnimation = false;
                 this.isMoving = false;
             }
-        } else if (keyPressState.right) {
+        } else if (keyPressedState.right) {
             this.walkingDirection = RIGHT;
 
             if (!this.surroundingCollisions.right) {
@@ -107,7 +116,7 @@ export default class Player extends AbstractSprite {
     }
 
     setupSprite() {
-        this.game.add.sprite(
+        this.sprite = this.game.add.sprite(
             this.getTileX(this.initialTile.x),
             this.getTileY(this.initialTile.y),
             this.spriteName
@@ -115,7 +124,7 @@ export default class Player extends AbstractSprite {
     }
 
     setupAnchor() {
-        this.anchor.setTo(
+        this.sprite.anchor.setTo(
             SPRITES_CONFIG.anchor.X,
             SPRITES_CONFIG.anchor.Y
         );

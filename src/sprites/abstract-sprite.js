@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import { SPRITES_CONFIG } from '../config';
 
-export default class AbstractSprite extends Phaser.Sprite {
+export default class AbstractSprite {
     spriteName = null;
     spritesheetPath = null;
     initialTile = null;
@@ -14,17 +14,10 @@ export default class AbstractSprite extends Phaser.Sprite {
     walkingDirection = null;
     walkingSpeed = 0;
     isMoving = false;
-    tilemap = null;
-    keyPressState = {
-        up: false,
-        right: false,
-        down: false,
-        left: false
-    };
 
-    constructor(game, tilemap, spriteName) {
-        super(game, 0, 0, spriteName);
-        this.tilemap = tilemap;
+    constructor(game, spriteName) {
+        // super(game, 32, 32, spriteName);
+        this.game = game;
         this.spriteName = spriteName;
     }
 
@@ -32,12 +25,12 @@ export default class AbstractSprite extends Phaser.Sprite {
         let { STILL_DOWN, STILL_UP, STILL_SIDE } = SPRITES_CONFIG.animations;
         let { WALKING_DOWN, WALKING_UP, WALKING_SIDE } = SPRITES_CONFIG.animations;
 
-        this.animations.add(STILL_DOWN, [0]);
-        this.animations.add(STILL_UP, [2]);
-        this.animations.add(STILL_SIDE, [4]);
-        this.animations.add(WALKING_DOWN, [0, 1], this.animationSpeed, true);
-        this.animations.add(WALKING_UP, [2, 3], this.animationSpeed, true);
-        this.animations.add(WALKING_SIDE, [4, 5], this.animationSpeed, true);
+        this.sprite.animations.add(STILL_DOWN, [0]);
+        this.sprite.animations.add(STILL_UP, [2]);
+        this.sprite.animations.add(STILL_SIDE, [4]);
+        this.sprite.animations.add(WALKING_DOWN, [0, 1], this.animationSpeed, true);
+        this.sprite.animations.add(WALKING_UP, [2, 3], this.animationSpeed, true);
+        this.sprite.animations.add(WALKING_SIDE, [4, 5], this.animationSpeed, true);
     }
 
     setupIdleAnimation() {
@@ -46,24 +39,24 @@ export default class AbstractSprite extends Phaser.Sprite {
 
         switch(this.walkingDirection) {
             case UP:
-                this.animations.play(STILL_UP);
+                this.sprite.animations.play(STILL_UP);
                 break;
 
             case RIGHT:
-                this.scale.x = -1;
-                this.animations.play(STILL_SIDE);
+                this.sprite.scale.x = -1;
+                this.sprite.animations.play(STILL_SIDE);
                 break;
 
             case DOWN:
-                this.animations.play(STILL_DOWN);
+                this.sprite.animations.play(STILL_DOWN);
                 break;
 
             case LEFT:
-                this.scale.x = 1;
-                this.animations.play(STILL_SIDE);
+                this.sprite.scale.x = 1;
+                this.sprite.animations.play(STILL_SIDE);
                 break;
         }
-        this.animations.stop();
+        this.sprite.animations.stop();
     }
 
     setupWalkingAnimation() {
@@ -72,21 +65,21 @@ export default class AbstractSprite extends Phaser.Sprite {
 
         switch (this.walkingDirection) {
             case UP:
-                this.animations.play(WALKING_UP);
+                this.sprite.animations.play(WALKING_UP);
                 break;
 
             case RIGHT:
-                this.scale.x = -1;
-                this.animations.play(WALKING_SIDE);
+                this.sprite.scale.x = -1;
+                this.sprite.animations.play(WALKING_SIDE);
                 break;
 
             case DOWN:
-                this.animations.play(WALKING_DOWN);
+                this.sprite.animations.play(WALKING_DOWN);
                 break;
 
             case LEFT:
-                this.scale.x = 1;
-                this.animations.play(WALKING_SIDE);
+                this.sprite.scale.x = 1;
+                this.sprite.animations.play(WALKING_SIDE);
                 break;
         }
     }
@@ -106,26 +99,26 @@ export default class AbstractSprite extends Phaser.Sprite {
 
         switch (this.walkingDirection) {
             case UP:
-                this.y -= this.walkingSpeed;
+                this.sprite.y -= this.walkingSpeed;
                 break;
 
             case RIGHT:
-                this.x += this.walkingSpeed;
+                this.sprite.x += this.walkingSpeed;
                 break;
 
             case DOWN:
-                this.y += this.walkingSpeed;
+                this.sprite.y += this.walkingSpeed;
                 break;
 
             case LEFT:
-                this.x -= this.walkingSpeed;
+                this.sprite.x -= this.walkingSpeed;
                 break;
         }
     }
 
     getCurrentTile() {
-        let spriteX = this.x - (SPRITES_CONFIG.anchor.X * SPRITES_CONFIG.spriteSize);
-        let spriteY = this.y - SPRITES_CONFIG.spriteSize;
+        let spriteX = this.sprite.x - (SPRITES_CONFIG.anchor.X * SPRITES_CONFIG.spriteSize);
+        let spriteY = this.sprite.y - SPRITES_CONFIG.spriteSize;
         return {
             x: spriteX / SPRITES_CONFIG.spriteSize,
             y: spriteY / SPRITES_CONFIG.spriteSize
@@ -168,8 +161,8 @@ export default class AbstractSprite extends Phaser.Sprite {
     }
 
     isOnTile() {
-        let spriteX = this.x + (SPRITES_CONFIG.anchor.X * SPRITES_CONFIG.spriteSize);
-        let spriteY = this.y;
+        let spriteX = this.sprite.x + (SPRITES_CONFIG.anchor.X * SPRITES_CONFIG.spriteSize);
+        let spriteY = this.sprite.y;
         return (spriteX % SPRITES_CONFIG.spriteSize === 0)
             && (spriteY % SPRITES_CONFIG.spriteSize === 0);
     }

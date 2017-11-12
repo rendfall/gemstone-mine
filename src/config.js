@@ -52,9 +52,9 @@ export const MAP_CONFIG = {
                 { name: 'collisions', src: 'assets/images/sprites/collisions.png' }
             ],
             LAYERS: [
-                'collisions',
+                'backgrounds',
                 'terrains',
-                'background'
+                'collisions'
             ]
         }
     ]

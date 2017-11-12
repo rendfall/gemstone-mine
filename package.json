@@ -4,6 +4,7 @@
     "description": "Tile-based game with gems and stuffs...",
     "main": "index.js",
     "scripts": {
+        "prestart": "webpack",
         "start": "nodemon ./server.js",
         "dev": "webpack --watch"
     },

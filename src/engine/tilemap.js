@@ -52,41 +52,61 @@ export default class Tilemap {
         let backgroundsLayer = this.map.createLayer('backgrounds');
         let terrainsLayer = this.map.createLayer('terrains');
         let collisionsLayer = this.map.createLayer('collisions');
+        let objectsLayer = this.map.createLayer('objects');
 
         backgroundsLayer.resizeWorld();
         terrainsLayer.resizeWorld();
         collisionsLayer.alpha = 0;
         collisionsLayer.resizeWorld();
+        objectsLayer.resizeWorld();
 
         this.layers.set('backgrounds', backgroundsLayer);
         this.layers.set('terrains', terrainsLayer);
         this.layers.set('collisions', collisionsLayer);
+        this.layers.set('objects', objectsLayer);
+    }
+
+    setInteraction(tile) {
+        let objectTile = this.getTileObject(tile);
+
+        if (!objectTile) return;
+
+        switch (objectTile.properties.type) {
+            case 'gem':
+                console.log('You picked gem!');
+                break
+        }
+    }
+
+    getTileObject(tile) {
+        return this.map.getTile(tile.x, tile.y, 'objects');
     }
 
     putTile(index, tile) {
-        let terrainsLayer = this.layers.get('terrains');
-        this.map.putTile(index, tile.x, tile.y, terrainsLayer);
+        this.map.putTile(index, tile.x, tile.y, 'terrains');
     }
 
     removeTile(tile) {
-        let terrainsLayer = this.layers.get('terrains');
-        this.map.removeTile(tile.x, tile.y, terrainsLayer);
+        this.map.removeTile(tile.x, tile.y, 'terrains');
     }
 
     setupCollisions() {
         let collisionsLayer = this.layers.get('collisions');
+        let objectsLayer = this.layers.get('objects');
         let terrainsLayer = this.layers.get('terrains');
-        let collisionTile;
-        let targetTile;
-        let hasCollision;
 
         for (let i = 0; i < this.map.height; i++) {
             for (let j = 0; j < this.map.width ; j++) {
-                collisionTile = collisionsLayer.layer.data[i][j];
-                targetTile = terrainsLayer.layer.data[i][j];
+                let collisionsTile = collisionsLayer.layer.data[i][j];
+                let targetTile = terrainsLayer.layer.data[i][j];
+                let objectsTile = objectsLayer.layer.data[i][j];
 
-                if (collisionTile.properties.collision) {
+                if (collisionsTile.properties.collision) {
                     this.setTileAsCollider(targetTile);
+                }
+
+                if (collisionsTile.properties.action) {
+                    this.setTileAsInteract(targetTile, objectsTile.properties.type);
                 }
             }
         }
@@ -97,6 +117,10 @@ export default class Tilemap {
         tile.collideLeft = true;
         tile.collideRight = true;
         tile.collideUp = true;
+    }
+
+    setTileAsInteract(tile, type) {
+        tile.properties.type =  type
     }
 
     getSurroundingCollisionsAt(tile) {

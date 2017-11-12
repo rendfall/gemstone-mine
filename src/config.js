@@ -50,12 +50,14 @@ export const MAP_CONFIG = {
             },
             TILESETS: [
                 { name: 'terrains', src: 'assets/images/sprites/terrains.png' },
+                { name: 'pickups', src: 'assets/images/sprites/pickups.png' },
                 { name: 'collisions', src: 'assets/images/sprites/collisions.png' }
             ],
             LAYERS: [
                 'backgrounds',
                 'terrains',
-                'collisions'
+                'collisions',
+                'objects'
             ]
         }
     ]

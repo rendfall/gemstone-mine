@@ -9,6 +9,7 @@ export default class Player extends AbstractSprite {
         down: false,
         left: false
     };
+    isPlayerEntered = false;
 
     constructor(game, map) {
         let spriteName = 'player';
@@ -42,6 +43,7 @@ export default class Player extends AbstractSprite {
     }
 
     updateWhenNextTile() {
+        this.isPlayerEntered = true;
         this.updateNextTile();
         this.tilemap.removeTile(this.nextTile);
         this.tilemap.setCollisionAt(this.nextTile, true);
@@ -57,6 +59,12 @@ export default class Player extends AbstractSprite {
         }
 
         this.currentTile = this.getCurrentTile();
+
+        if (this.isPlayerEntered) {
+            this.isPlayerEntered = false;
+            this.tilemap.setInteraction(this.currentTile);
+        }
+
         this.tilemap.setCollisionAt(this.currentTile, true);
         this.surroundingCollisions = this.tilemap.getSurroundingCollisionsAt(this.currentTile);
 

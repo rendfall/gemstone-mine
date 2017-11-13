@@ -2,6 +2,8 @@
 
 > Tile-based game with gems and stuffs...
 
+![](./preview.gif)
+
 ## Tools of choice 🔧
 
 * Phaser CE 2.9.1

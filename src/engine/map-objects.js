@@ -1,4 +1,4 @@
-export default class MapObjects {
+export class MapObjects {
     totalGems = 0;
     gemCollected = 0;
     exitTile = null;

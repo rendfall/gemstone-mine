@@ -1,40 +1,52 @@
-let path = require('path');
-let webpack = require('webpack');
-let CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path');
+const webpack = require('webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
-let phaserModule = path.join(__dirname, '/node_modules/phaser-ce/');
-let phaser = path.join(phaserModule, 'build/custom/phaser-split.js');
-let pixi = path.join(phaserModule, 'build/custom/pixi.js');
-let p2 = path.join(phaserModule, 'build/custom/p2.js');
+// Phaser webpack config
+const phaserModule = path.join(__dirname, '/node_modules/phaser/');
+const phaser = path.join(phaserModule, 'src/phaser.js');
+
+const definePlugin = new webpack.DefinePlugin({
+    __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'true'))
+});
 
 module.exports = {
     entry: {
         app: [
             'babel-polyfill',
-            'pixi',
-            'p2',
-            'phaser',
-            'webfontloader',
-            path.join(__dirname, 'src/main.js')
-        ]
+            path.resolve(__dirname, 'src/main.js')
+        ],
+        vendor: ['phaser']
     },
-    devtool: 'source-map',
+    devtool: 'cheap-source-map',
     output: {
         pathinfo: true,
-        path: path.join(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'dist'),
         publicPath: './dist/',
         filename: 'bundle.js'
     },
+    watch: true,
     plugins: [
+        definePlugin,
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'vendor'/* chunkName= */,
+            filename: 'vendor.bundle.js'/* filename= */
+        }),
+        new BrowserSyncPlugin({
+            host: process.env.IP || 'localhost',
+            port: process.env.PORT || 3000,
+            server: {
+                baseDir: ['./dist']
+            }
+        }),
         new webpack.DefinePlugin({
             'CANVAS_RENDERER': JSON.stringify(true),
             'WEBGL_RENDERER': JSON.stringify(true)
         }),
         new CopyWebpackPlugin([
-            {
-                from: path.resolve(__dirname, 'src/assets'),
-                to: path.resolve(__dirname, 'dist/assets')
-            }
+            { from: './src/assets', to: './assets' },
+            { from: './src/index.html', to: './index.html' }
         ])
     ],
     module: {
@@ -50,9 +62,8 @@ module.exports = {
                 }],
                 include: path.join(__dirname, 'src')
             },
-            { test: /pixi\.js/, use: ['expose-loader?PIXI'] },
             { test: /phaser-split\.js$/, use: ['expose-loader?Phaser'] },
-            { test: /p2\.js/, use: ['expose-loader?p2'] }
+            { test: [/\.vert$/, /\.frag$/], use: 'raw-loader' }
         ]
     },
     node: {
@@ -62,9 +73,7 @@ module.exports = {
     },
     resolve: {
         alias: {
-            'phaser': phaser,
-            'pixi': pixi,
-            'p2': p2
+            'phaser': phaser
         }
     }
 };

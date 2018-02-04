@@ -1,8 +1,6 @@
-import Phaser from 'phaser';
-
 import { SPRITES_CONFIG } from '../config';
 
-export default class AbstractSprite {
+export class AbstractSprite {
     spriteName = null;
     spritesheetPath = null;
     initialTile = null;
@@ -15,9 +13,9 @@ export default class AbstractSprite {
     walkingSpeed = 0;
     isMoving = false;
 
-    constructor(game, spriteName) {
-        // super(game, 32, 32, spriteName);
-        this.game = game;
+    constructor(scene, spriteName) {
+        // super(scene, 32, 32, spriteName);
+        this.scene = scene;
         this.spriteName = spriteName;
     }
 

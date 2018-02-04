@@ -1,11 +1,11 @@
-import Phaser from 'phaser'
+import 'phaser'
 
 import { SPRITES_CONFIG } from '../config';
-import Tilemap from '../engine/tilemap';
-import Player from '../sprites/player';
-import Snake from '../sprites/snake';
+import { Tilemap } from '../engine/tilemap';
+import { Player } from '../sprites/player';
+import { Snake } from '../sprites/snake';
 
-export default class GameState extends Phaser.State {
+export class GameScene extends Phaser.Scene {
     isUpPressed = false;
     isRightPressed = false;
     isDownPressed = false;
@@ -14,17 +14,17 @@ export default class GameState extends Phaser.State {
     enemies = [];
 
     constructor () {
-        super({ key: 'GameState' });
+        super({ key: 'GameScene' });
     }
 
     init() {
-        this.tilemap = new Tilemap(this.game, 1);
-        this.player = new Player(this.game, this.tilemap);
+        this.tilemap = new Tilemap(this, 1);
+        this.player = new Player(this, this.tilemap);
 
-        let snake1 = new Snake('snake1', this.game, this.tilemap);
-        let snake2 = new Snake('snake2', this.game, this.tilemap);
-        let snake3 = new Snake('snake3', this.game, this.tilemap);
-        let snake4 = new Snake('snake4', this.game, this.tilemap);
+        let snake1 = new Snake('snake1', this, this.tilemap);
+        let snake2 = new Snake('snake2', this, this.tilemap);
+        let snake3 = new Snake('snake3', this, this.tilemap);
+        let snake4 = new Snake('snake4', this, this.tilemap);
 
         this.enemies.push(snake1);
         this.enemies.push(snake2);
@@ -68,6 +68,6 @@ export default class GameState extends Phaser.State {
         this.enemies[2].setup({ x: 3, y: 10 }, LEFT);
         this.enemies[3].setup({ x: 7, y: 10 }, RIGHT);
 
-        this.keyboard = this.game.input.keyboard;
+        this.keyboard = this.input.keyboard;
     }
 }

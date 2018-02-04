@@ -1,30 +1,28 @@
-import Phaser from 'phaser';
+import 'phaser';
 
 import { MAP_CONFIG } from '../config';
-import MapObjects from './map-objects';
+import { MapObjects } from './map-objects';
 
-export default class Tilemap {
+export class Tilemap {
     map = null;
     level = null;
     layers = new Map();
 
-    constructor(game, levelNumber) {
-        this.game = game;
+    constructor(scene, levelNumber) {
+        this.scene = scene;
         this.level = MAP_CONFIG.levels[levelNumber - 1];
     }
 
     preload() {
         let tilemap = this.level.TILEMAP;
         let tilesets = this.level.TILESETS || [];
-        this.game.load.tilemap(
+        this.scene.load.tilemapTiledJSON(
             tilemap.name,
-            tilemap.src,
-            null,
-            Phaser.Tilemap.TILED_JSON
+            tilemap.src
         );
 
         tilesets.forEach((tileset) => {
-            this.game.load.image(tileset.name, tileset.src);
+            this.scene.load.image(tileset.name, tileset.src);
         });
     }
 
@@ -39,7 +37,7 @@ export default class Tilemap {
 
     setupTilemap() {
         let tilemap = this.level.TILEMAP;
-        this.map = this.game.add.tilemap(tilemap.name);
+        this.map = this.scene.add.tilemap(tilemap.name);
         this.mapObjects = new MapObjects(game, this.map);
     }
 

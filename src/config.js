@@ -1,11 +1,14 @@
-import Phaser from 'phaser';
+import 'phaser';
+
+import { GameScene } from './scenes/game';
 
 export const PHASER_CONFIG = {
     type: Phaser.AUTO,
     parent: 'content',
     width: 800,
     height: 600,
-    localStorageName: 'gemstone-mine'
+    localStorageName: 'gemstone-mine',
+    scene: [GameScene]
 };
 
 export const SPRITES_CONFIG = {

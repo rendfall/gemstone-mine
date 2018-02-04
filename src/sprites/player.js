@@ -1,7 +1,7 @@
-import AbstractSprite from './abstract-sprite';
+import { AbstractSprite } from './abstract-sprite';
 import { SPRITES_CONFIG } from '../config';
 
-export default class Player extends AbstractSprite {
+export class Player extends AbstractSprite {
     tilemap = null;
     keyPressedState = {
         up: false,
@@ -11,9 +11,9 @@ export default class Player extends AbstractSprite {
     };
     isPlayerEntered = false;
 
-    constructor(game, map) {
+    constructor(scene, map) {
         let spriteName = 'player';
-        super(game, spriteName);
+        super(scene, spriteName);
 
         this.tilemap = map;
         this.spriteName = spriteName;
@@ -21,7 +21,7 @@ export default class Player extends AbstractSprite {
     }
 
     preload() {
-        this.game.load.spritesheet(
+        this.scene.load.spritesheet(
             this.spriteName,
             this.spritesheetPath,
             SPRITES_CONFIG.spriteSize,
@@ -123,13 +123,13 @@ export default class Player extends AbstractSprite {
     }
 
     setupSprite() {
-        this.sprite = this.game.add.sprite(
+        this.sprite = this.scene.add.sprite(
             this.getTileX(this.initialTile.x),
             this.getTileY(this.initialTile.y),
             this.spriteName
         );
 
-        this.game.camera.follow(this.sprite);
+        this.scene.camera.follow(this.sprite);
     }
 
     setupAnchor() {

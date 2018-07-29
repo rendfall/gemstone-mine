@@ -34,7 +34,7 @@
         "babel-plugin-transform-class-properties": "^6.24.1"
     },
     "dependencies": {
-        "phaser": "3.0.0-beta.20",
+        "phaser": "3.11.0",
         "webfontloader": "^1.6.28"
     }
 }

@@ -3,6 +3,10 @@ import { SPRITES_CONFIG } from '../config';
 
 export class Player extends AbstractSprite {
     tilemap = null;
+    scene = null;
+    spriteName = '';
+    spritesheetPath = '';
+    surroundingCollisions = null;
     keyPressedState = {
         up: false,
         right: false,
@@ -12,11 +16,10 @@ export class Player extends AbstractSprite {
     isPlayerEntered = false;
 
     constructor(scene, map) {
-        let spriteName = 'player';
-        super(scene, spriteName);
+        super(scene, 'player');
 
+        this.scene = scene;
         this.tilemap = map;
-        this.spriteName = spriteName;
         this.spritesheetPath = 'assets/images/sprites/player.png';
     }
 

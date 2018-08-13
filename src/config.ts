@@ -1,5 +1,3 @@
-import 'phaser';
-
 import { GameScene } from './scenes/game';
 
 export const PHASER_CONFIG = {
@@ -8,7 +6,14 @@ export const PHASER_CONFIG = {
     width: 800,
     height: 600,
     localStorageName: 'gemstone-mine',
-    scene: [GameScene]
+    scene: [GameScene],
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 },
+            debug: true
+        }
+    }
 };
 
 export const SPRITES_CONFIG = {

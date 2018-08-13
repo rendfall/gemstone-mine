@@ -1,79 +1,67 @@
 const path = require('path');
 const webpack = require('webpack');
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
-// Phaser webpack config
-const phaserModule = path.join(__dirname, '/node_modules/phaser/');
-const phaser = path.join(phaserModule, 'src/phaser.js');
-
-const definePlugin = new webpack.DefinePlugin({
-    __DEV__: JSON.stringify(JSON.parse(process.env.BUILD_DEV || 'true'))
-});
+const env = process.env.NODE_ENV;
 
 module.exports = {
+    mode: env || 'development',
+
     entry: {
         app: [
-            'babel-polyfill',
-            path.resolve(__dirname, 'src/main.js')
-        ],
-        vendor: ['phaser']
+            path.resolve(__dirname, 'src/main.ts')
+        ]
     },
-    devtool: 'cheap-source-map',
+
+    // devtool: 'cheap-source-map',
+
     output: {
-        pathinfo: true,
         path: path.resolve(__dirname, 'dist'),
-        publicPath: './dist/',
         filename: 'bundle.js'
     },
-    watch: true,
+
+    resolve: {
+        extensions: ['.ts', '.js'],
+        plugins: [
+            new TsConfigPathsPlugin()
+        ]
+    },
+
     plugins: [
-        definePlugin,
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendor'/* chunkName= */,
-            filename: 'vendor.bundle.js'/* filename= */
+        new HtmlWebpackPlugin({
+            filename: `index.html`,
+            template: path.join(__dirname, 'src/', `index.html`)
         }),
-        new BrowserSyncPlugin({
-            host: process.env.IP || 'localhost',
-            port: process.env.PORT || 3000,
-            server: {
-                baseDir: ['./dist']
+        new CleanWebpackPlugin(path.join(__dirname, 'dist/')),
+        new CopyWebpackPlugin([
+            {
+                from: './src/assets',
+                to: './assets'
             }
-        }),
+        ]),
         new webpack.DefinePlugin({
             'CANVAS_RENDERER': JSON.stringify(true),
             'WEBGL_RENDERER': JSON.stringify(true)
-        }),
-        new CopyWebpackPlugin([
-            { from: './src/assets', to: './assets' },
-            { from: './src/index.html', to: './index.html' }
-        ])
+        })
     ],
+
     module: {
         rules: [
             {
-                test: /\.js$/,
-                use: [{
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['env'],
-                        plugins: ['transform-class-properties']
-                    }
-                }],
-                include: path.join(__dirname, 'src')
+                test: /\.ts$/,
+                loader: 'awesome-typescript-loader'
             },
-            { test: /phaser-split\.js$/, use: ['expose-loader?Phaser'] },
-            { test: [/\.vert$/, /\.frag$/], use: 'raw-loader' }
+            {
+                test: [ /\.vert$/, /\.frag$/ ],
+                use: 'raw-loader'
+            }
         ]
     },
+
     node: {
-        fs: 'empty',
-        net: 'empty',
-        tls: 'empty'
-    },
-    resolve: {
-        alias: {
-            'phaser': phaser
-        }
+        fs: "empty"
     }
 };

@@ -3,13 +3,16 @@ import { SPRITES_CONFIG } from '../config';
 
 export class Snake extends AbstractSprite {
     tilemap = null;
+    scene = null;
+    sprite  = null;
+    surroundingCollisions = null;
 
     constructor(name, scene, map) {
-        let spriteName = name;
-        super(scene, spriteName);
+        super(scene, name);
 
+        this.scene = scene;
         this.tilemap = map;
-        this.spriteName = spriteName;
+        this.spriteName = name;
         this.spritesheetPath = 'assets/images/sprites/snake.png';
     }
 
@@ -82,7 +85,7 @@ export class Snake extends AbstractSprite {
         }
     }
 
-    setup(tile, direction = SPRITES_CONFIG.UP) {
+    setup(tile, direction = SPRITES_CONFIG.directions.UP) {
         this.initialTile = tile;
         this.setupSprite();
         this.setupAnchor();

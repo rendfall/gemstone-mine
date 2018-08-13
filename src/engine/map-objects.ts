@@ -1,4 +1,6 @@
 export class MapObjects {
+    game = null;
+    map = null;
     totalGems = 0;
     gemCollected = 0;
     exitTile = null;
@@ -10,10 +12,10 @@ export class MapObjects {
     }
 
     setupScoreBoard() {
-        this.scoreBoard = this.game.add.text(5, 0, '', {
-            fontSize: '24px',
-            fill: '#fff'
-        });
+        // this.scoreBoard = this.game.add.text(5, 0, '', {
+        //     fontSize: '24px',
+        //     fill: '#fff'
+        // });
 
         this.updateScoreBoard();
     }

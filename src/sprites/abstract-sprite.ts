@@ -12,6 +12,8 @@ export class AbstractSprite {
     walkingDirection = null;
     walkingSpeed = 0;
     isMoving = false;
+    scene = null;
+    sprite = null;
 
     constructor(scene, spriteName) {
         // super(scene, 32, 32, spriteName);
